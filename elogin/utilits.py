@@ -19,16 +19,18 @@ def read_xls_columns(file):
     except Exception as e:
         print(f"Xatolik: {e}")
         return None, None
+import os
+
 def is_excel(file):
-    # """ Fayl MIME turini tekshirish (faqat Excel qabul qilinadi) """
-    # mime = magic.Magic(mime=True)
-    # file_type = mime.from_buffer(file.read(2048))
-    # file.seek(0)  # Faylni boshiga qaytarish
-    # return file_type in [
-    #     "application/vnd.ms-excel",
-    #     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    # ]
-    return True
+    """ Fayl kengaytmasi bo‘yicha Excel fayli ekanligini tekshirish """
+    excel_extensions = {".xls", ".xlsx"}
+    
+    if isinstance(file, str):  # Fayl nomi sifatida kelsa
+        ext = os.path.splitext(file)[1].lower()
+    else:  # Django yoki Flask file-like object sifatida kelsa
+        ext = os.path.splitext(file.name)[1].lower()
+
+    return ext in excel_extensions
 def add_user_list(logins, passwords):
     """
     Login va parollarni Users modeliga saqlaydi.
